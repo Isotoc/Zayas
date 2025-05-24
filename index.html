@@ -1,426 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Financial Report - Duraflake</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Estrategias de Marketing para Facebook Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Estilos personalizados para la tipografía y transiciones */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Tailwind light gray */
-            color: #1f2937; /* Tailwind dark gray */
+            background-color: #f0f2f5; /* Gris claro similar a Facebook */
         }
-        .chart-container {
-            position: relative;
-            margin: auto; /* Centers the container if max-width is set */
-            padding: 20px;
-            border-radius: 12px; /* More rounded corners */
-            background-color: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* More pronounced shadow */
+        .accordion-item {
+            border-bottom: 1px solid #e5e5e5; /* Borde sutil entre elementos */
         }
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem; /* Increased spacing */
-            margin-bottom: 2rem; /* Increased bottom margin */
-        }
-        .kpi-card {
-            background-color: #ffffff;
-            padding: 1.5rem; /* Increased padding */
-            border-radius: 12px; /* More rounded corners */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            text-align: center;
-        }
-        .kpi-title {
-            font-size: 0.875rem; /* 14px */
-            color: #6b7280; /* Tailwind medium gray */
-            margin-bottom: 0.5rem;
-        }
-        .kpi-value {
-            font-size: 1.875rem; /* 30px */
-            font-weight: 700;
-            color: #111827; /* Tailwind darker gray */
-        }
-        .kpi-forecast {
-            font-size: 0.875rem;
-            color: #4b5563; /* Tailwind dark medium gray */
-        }
-        .kpi-variance {
-            font-size: 1rem; /* 16px */
-            font-weight: 600;
-            margin-top: 0.25rem;
-        }
-        .favorable {
-            color: #10b981; /* Tailwind green */
-        }
-        .unfavorable {
-            color: #ef4444; /* Tailwind red */
-        }
-        .summary-text {
-            font-size: 0.875rem;
-            color: #4b5563;
-            line-height: 1.6;
-        }
-        .summary-highlight {
-            font-weight: 600;
-            color: #1f2937;
-        }
-        .summary-highlight.unfavorable {
-            color: #ef4444;
-        }
-         .summary-highlight.favorable {
-            color: #10b981;
-        }
-        /* Styles for Chart.js tooltips */
-        .chartjs-tooltip {
-            opacity: 1;
-            position: absolute;
-            background: rgba(0, 0, 0, 0.75);
+        .accordion-button {
+            background-color: #1877f2; /* Azul de Facebook */
             color: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 0.875rem;
-            pointer-events: none;
-            transition: all .1s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 1rem 1.5rem;
+            width: 100%;
+            text-align: left;
+            font-weight: 600;
+            border-radius: 0.5rem; /* Bordes redondeados */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .chartjs-tooltip-key {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin-right: 8px;
-            border-radius: 2px;
+        .accordion-button:hover {
+            background-color: #166fe5; /* Azul ligeramente más oscuro al pasar el ratón */
+        }
+        .accordion-content {
+            background-color: #ffffff; /* Fondo blanco para las respuestas */
+            overflow: hidden;
+            max-height: 0; /* Inicialmente oculto */
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Transición suave */
+            padding: 0 1.5rem; /* Padding horizontal inicial */
+            border-radius: 0.5rem; /* Bordes redondeados */
+            margin-top: 0.5rem;
+        }
+        .accordion-content.active {
+            max-height: 500px; /* Suficientemente grande para contener la respuesta, ajustar si es necesario */
+            padding: 1rem 1.5rem; /* Padding vertical cuando está activo */
+        }
+        .accordion-button .icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button.active .icon {
+            transform: rotate(45deg); /* Gira el icono de más a cruz */
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10 my-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-[#1877f2]">
+            Estrategias de Marketing para Facebook Marketplace
+        </h1>
 
-    <div class="max-w-7xl mx-auto">
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-sky-700">Duraflake - Total Performance</h1>
-            <p class="text-lg text-gray-600 mt-2">Interactive analysis of financial results.</p>
-        </header>
+        <div id="accordion-container">
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>1. ¿Cuál es una ventaja de automatizar las respuestas a los comentarios en Facebook?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Aumentar la participación orgánica, mejorar la imagen de la empresa, incrementar la participación de los clientes y las ventas, y crear una experiencia de marca integral al ofrecer asistencia casi inmediata.
+                    </p>
+                </div>
+            </div>
 
-        <div class="mb-8 p-6 bg-white rounded-xl shadow-lg">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">General Summary</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-                <p class="summary-text">Total production volume: <span class="summary-highlight">24,877 M3</span> (Forecast 28,793 M3).</p>
-                <p class="summary-text">Line 4 uptime: <span class="summary-highlight">87.5%</span>. TFL uptime: <span class="summary-highlight">71.6%</span>.</p>
-                <p class="summary-text">Total COGM Line 4: <span class="summary-highlight unfavorable">unfavorable ($25.78)/M3</span>.</p>
-                <p class="summary-text">Total TFL COGM: <span class="summary-highlight unfavorable">unfavorable ($10.44)/M3</span>.</p>
-                <p class="summary-text">SG&A: <span class="summary-highlight favorable">$7.9k favorable</span>.</p>
-                <p class="summary-text">Total EBITDA: <span class="summary-highlight">$1.41M</span> (Forecast $1.89M).</p>
-                <p class="summary-text">EBITDA Margin: <span class="summary-highlight">18.9%</span> (Forecast 22.8%).</p>
-                <p class="summary-text">Total Sales Volume: <span class="summary-highlight">19,174 M3</span> (<span class="summary-highlight unfavorable">9.3% unfavorable</span>).</p>
-                <p class="summary-text">Price/cube: <span class="summary-highlight unfavorable">unfavorable ($6.58)/M3 (1.5%)</span> due to PB vs TFL mix.</p>
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>2. Según las fuentes, ¿qué herramienta de IA se menciona para automatizar las respuestas a los comentarios en Facebook?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Fuely IA, la cual se integra con ChatGPT.
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <div class="kpi-grid mb-12">
-            <div class="kpi-card">
-                <div class="kpi-title">EBITDA</div>
-                <div class="kpi-value">$1.41M</div>
-                <div class="kpi-forecast">Forecast: $1.89M</div>
-                <div class="kpi-variance unfavorable">($485.7K)</div>
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>3. ¿Cómo puede ayudar Fuely IA con los comentarios de Facebook?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Puede responder automáticamente a los comentarios, entender el contexto y mantener la conversación.
+                    </p>
+                </div>
             </div>
-            <div class="kpi-card">
-                <div class="kpi-title">EBITDA Margin</div>
-                <div class="kpi-value">18.9%</div>
-                <div class="kpi-forecast">Forecast: 22.8%</div>
-                <div class="kpi-variance unfavorable">-3.9 pp</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">Net Sales</div>
-                <div class="kpi-value">$7.47M</div>
-                <div class="kpi-forecast">Forecast: $8.32M</div>
-                <div class="kpi-variance unfavorable">($850.4K)</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">Sales Volume (m³)</div>
-                <div class="kpi-value">19,174</div>
-                <div class="kpi-forecast">Forecast: 21,144</div>
-                <div class="kpi-variance unfavorable">(1,970)</div>
-            </div>
-        </div>
 
-        <div class="chart-container mb-8" style="height:500px; width:100%; max-width:900px;">
-            <canvas id="financialChart"></canvas>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <div class="chart-container" style="height:400px;">
-                <canvas id="revenuePerM3Chart"></canvas>
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>4. Según una fuente, ¿qué plataforma se sugiere como un buen punto de partida para quienes son nuevos en las ventas en línea?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        El marketplace de Facebook.
+                    </p>
+                </div>
             </div>
-            <div class="chart-container" style="height:400px;">
-                <canvas id="costPerM3Chart"></canvas>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>5. ¿Cuál es la principal ventaja de vender en Facebook Marketplace según una fuente?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Es una opción gratuita para empezar a vender.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>6. ¿Qué modelo de marketing se sugiere para escribir textos persuasivos (copywriting) para las publicaciones en Facebook?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        El modelo AIDA, que incluye Atención, Interés, Deseo y Acción.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>7. ¿Cuál es el propósito de la etapa de "Atención" en el modelo AIDA para una publicación de Facebook?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Hacer que la gente se dé cuenta de lo que se está ofreciendo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>8. ¿Qué tipo de información se debe incluir en la etapa de "Interés" del modelo AIDA?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Aclarar las características del producto con información que la gente está buscando para ganar confianza.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>9. ¿Cuál es el objetivo de la etapa de "Deseo" en el modelo AIDA?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Inclinar a las personas a comprarte a ti en lugar de a otro, quizás ofreciendo un beneficio o servicio adicional.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>10. ¿A qué debería impulsar la etapa de "Acción" del modelo AIDA al usuario?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Dirigir al usuario a un espacio donde pueda obtener más información o comprar, como Messenger o WhatsApp.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>11. ¿Qué sitio web ofrece una herramienta de IA para generar publicaciones de Facebook Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        scale.com, específicamente en la sección de toolbox bajo la opción de Marketplace.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>12. ¿Qué información necesita la herramienta de IA en scale.com para generar una publicación de Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Título, descripción, estado del producto, precio y ciudad.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>13. ¿Qué se recomienda respecto a la ciudad al publicar en Marketplace utilizando Dropi?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Elegir ciudades con alto volumen de habitantes y donde el proveedor tenga su bodega para facilitar la "última milla" (entrega el mismo día), mencionando Bogotá como ejemplo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>14. ¿Qué método de entrega es importante para las ventas en Marketplace según una fuente?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        La "última milla", que permite la entrega el mismo día, idealmente a través de transportadoras como Velozes o Willoq, especialmente si se vende en la misma ciudad que la bodega del proveedor.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>15. ¿Cuántas fotos se pueden subir a una publicación de Facebook Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Se pueden subir hasta 10 fotografías.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>16. Menciona al menos un error común a evitar al vender en Facebook Marketplace.</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        No utilizar palabras clave relevantes en el título, tener una descripción confusa o incompleta, no tomar fotos de calidad, no establecer puntos de entrega claros, o no cumplir con los plazos de entrega o envíos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>17. ¿Cómo se puede utilizar la IA, específicamente ChatGPT, para ayudar a crear una publicación en Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Pidiéndole que genere listas de palabras clave relevantes para el título del artículo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>18. Además de generar el texto principal, ¿qué otra función ofrece la herramienta de IA en scale.com para Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Un asistente (en versión beta) que ayuda a resolver las dudas de los clientes y a responder a objeciones comunes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>19. ¿Cuántas publicaciones por día puede realizar típicamente un perfil nuevo en Facebook Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Inicialmente, se puede empezar con aproximadamente 8 publicaciones al día.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion-item mb-4">
+                <button class="accordion-button shadow-md">
+                    <span>20. ¿Cuál es el beneficio de la interacción directa con los clientes en Marketplace?</span>
+                    <span class="icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p class="text-gray-700 text-base sm:text-lg">
+                        Permite entender qué busca el cliente, lo cual es útil para afinar las habilidades como vendedor y mejorar futuros contenidos de venta.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data extracted from the image for the main chart
-        const labels = ['Revenues', 'Net Sales', 'Cost of Sales', 'EBITDA'];
-        const actualData = [8413026, 7465362, -6244726, 1410260]; // Cost of sales is negative
-        const forecastData = [9416561, 8315774, -6589830, 1895990]; // Cost of sales is negative
-        const varianceData = [-1003535, -850412, 345104, -485730];
+        // JavaScript para la funcionalidad de acordeón
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
 
-        // Data for per M3 charts
-        const actualPerM3 = {
-            revenues: 439,
-            netSales: 389,
-            costOfSales: -326, // Negative
-            ebitda: 73.55
-        };
-        const forecastPerM3 = {
-            revenues: 445,
-            netSales: 393,
-            costOfSales: -312, // Negative
-            ebitda: 89.67
-        };
-        const variancePerM3 = {
-            revenues: -6.58,
-            netSales: -3.94,
-            costOfSales: -14.02, // Negative implies higher cost
-            ebitda: -16.12
-        };
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Encuentra el contenido de la respuesta asociado al botón
+                    const content = button.nextElementSibling;
 
-        // Common configuration for tooltips
-        const tooltipPlugin = {
-            id: 'customTooltips',
-            callbacks: {
-                label: function(context) {
-                    let label = context.dataset.label || '';
-                    if (label) {
-                        label += ': ';
+                    // Alternar la clase 'active' en el botón y el contenido
+                    button.classList.toggle('active');
+                    content.classList.toggle('active');
+
+                    // Ajustar el icono de '+' a 'x' o viceversa
+                    const icon = button.querySelector('.icon');
+                    if (button.classList.contains('active')) {
+                        icon.textContent = 'x'; // Cambia a 'x' o un signo de menos
+                    } else {
+                        icon.textContent = '+'; // Cambia a '+'
                     }
-                    if (context.parsed.y !== null) {
-                        // Format as currency (USD), with negative sign if applicable
-                        const value = context.parsed.y;
-                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(value);
-
-                        // Add variance if it's the main financial chart
-                        if (context.chart.canvas.id === 'financialChart') {
-                            const index = context.dataIndex;
-                            const varianceValue = varianceData[index];
-                            const varianceFormatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(varianceValue);
-                            let varianceLabelText = ` (Variance: ${varianceFormatted})`;
-                            // Logic for favorable/unfavorable indicators
-                            if (context.datasetIndex === 0) { // Only for 'Actual' dataset
-                                if (labels[index] === 'Cost of Sales') { // Cost of Sales: lower is better
-                                    if (varianceValue < 0) varianceLabelText += ' 👍'; // Actual cost is less than forecast (negative variance is good)
-                                    else if (varianceValue > 0) varianceLabelText += ' 👎'; // Actual cost is more than forecast
-                                } else { // Revenues, Net Sales, EBITDA: higher is better
-                                    if (varianceValue > 0) varianceLabelText += ' 👍'; // Actual is greater than forecast
-                                    else if (varianceValue < 0) varianceLabelText += ' 👎'; // Actual is less than forecast
-                                }
-                            }
-                            label += varianceLabelText;
-                        } else { // For per M3 charts
-                            const category = context.chart.config.data.labels[context.dataIndex];
-                            let varianceValPerM3;
-                            if (category === 'Revenues/m3') varianceValPerM3 = variancePerM3.revenues;
-                            else if (category === 'Net Sales/m3') varianceValPerM3 = variancePerM3.netSales;
-                            else if (category === 'Cost of Sales/m3') varianceValPerM3 = variancePerM3.costOfSales;
-                            else if (category === 'EBITDA/m3') varianceValPerM3 = variancePerM3.ebitda;
-
-                            if (varianceValPerM3 !== undefined) {
-                                const varianceFormatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(varianceValPerM3);
-                                label += ` (Var: ${varianceFormatted})`;
-                            }
-                        }
-                    }
-                    return label;
-                }
-            }
-        };
-
-        // Create the main financial chart
-        const ctx = document.getElementById('financialChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Actual',
-                        data: actualData,
-                        backgroundColor: 'rgba(59, 130, 246, 0.7)', // More vibrant blue
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6, // Rounded corners for bars
-                    },
-                    {
-                        label: 'Forecast (RFCST)',
-                        data: forecastData,
-                        backgroundColor: 'rgba(209, 213, 219, 0.7)', // Light gray
-                        borderColor: 'rgba(209, 213, 219, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Financial Comparison: Actual vs. Forecast',
-                        font: { size: 18, weight: '600' },
-                        padding: { top: 10, bottom: 20 }
-                    },
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            font: { size: 12 },
-                            boxWidth: 20,
-                            padding: 20
-                        }
-                    },
-                    tooltip: tooltipPlugin
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false, // Allows negative values for Cost of Sales
-                        ticks: {
-                            callback: function(value, index, values) {
-                                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact' }).format(value);
-                            },
-                            font: { size: 12 }
-                        },
-                        grid: {
-                            color: 'rgba(200, 200, 200, 0.2)', // More subtle grid lines
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            font: { size: 12 }
-                        },
-                        grid: {
-                            display: false // Hide X-axis grid lines
-                        }
-                    }
-                },
-                animation: {
-                    duration: 1000, // Animation duration in ms
-                    easing: 'easeInOutQuart' // Easing type for animation
-                }
-            }
+                });
+            });
         });
-
-        // Create Revenues and Net Sales per M3 chart
-        const revenueCtx = document.getElementById('revenuePerM3Chart').getContext('2d');
-        new Chart(revenueCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Revenues/m3', 'Net Sales/m3', 'EBITDA/m3'],
-                datasets: [
-                    {
-                        label: 'Actual/m3',
-                        data: [actualPerM3.revenues, actualPerM3.netSales, actualPerM3.ebitda],
-                        backgroundColor: 'rgba(16, 185, 129, 0.7)', // Green
-                        borderColor: 'rgba(16, 185, 129, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                    },
-                    {
-                        label: 'Forecast/m3',
-                        data: [forecastPerM3.revenues, forecastPerM3.netSales, forecastPerM3.ebitda],
-                        backgroundColor: 'rgba(209, 213, 219, 0.7)', // Light gray
-                        borderColor: 'rgba(209, 213, 219, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Performance per M3 (Revenues, Net Sales, EBITDA)',
-                        font: { size: 16, weight: '600' },
-                        padding: { top: 10, bottom: 20 }
-                    },
-                    legend: { position: 'top', labels: { font: { size: 12 }}},
-                    tooltip: tooltipPlugin
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-                            }
-                        },
-                         grid: { color: 'rgba(200, 200, 200, 0.2)' }
-                    },
-                    x: { grid: { display: false } }
-                },
-                animation: { duration: 1000, easing: 'easeInOutQuart' }
-            }
-        });
-
-        // Create Cost of Sales per M3 chart
-        const costCtx = document.getElementById('costPerM3Chart').getContext('2d');
-        new Chart(costCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Cost of Sales/m3'],
-                datasets: [
-                    {
-                        label: 'Actual/m3',
-                        data: [actualPerM3.costOfSales],
-                        backgroundColor: 'rgba(239, 68, 68, 0.7)', // Red
-                        borderColor: 'rgba(239, 68, 68, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                    },
-                    {
-                        label: 'Forecast/m3',
-                        data: [forecastPerM3.costOfSales],
-                        backgroundColor: 'rgba(209, 213, 219, 0.7)', // Light gray
-                        borderColor: 'rgba(209, 213, 219, 1)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Cost of Sales per M3',
-                        font: { size: 16, weight: '600' },
-                        padding: { top: 10, bottom: 20 }
-                    },
-                    legend: { position: 'top', labels: { font: { size: 12 }}},
-                    tooltip: tooltipPlugin
-                },
-                scales: {
-                    y: {
-                        // beginAtZero: false, // Original line causing the issue
-                        suggestedMax: 0, // CORRECTED: Ensures 0 is included at the top of the Y-axis
-                                         // This allows the -312 forecast bar to be visible.
-                        ticks: {
-                            callback: function(value) {
-                                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
-                            }
-                        },
-                         grid: { color: 'rgba(200, 200, 200, 0.2)' }
-                    },
-                    x: { grid: { display: false } }
-                },
-                animation: { duration: 1000, easing: 'easeInOutQuart' }
-            }
-        });
-
     </script>
 </body>
 </html>
